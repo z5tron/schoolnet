@@ -37,7 +37,7 @@ class SCN_Student {
                 'has_archive' => false,
                 'show_in_menu' => false,
                 'menu_icon' => 'dashicons-book-alt',
-                'supports' => array( 'title', 'comments', 'thumbnail' ),
+                'supports' => array( 'title', 'comments', 'author', 'thumbnail' ),
 				'capability_type' => array('scn_student', 'scn_students'),
 				'map_meta_cap' => true,
             )
@@ -89,7 +89,7 @@ function scn_add_student_fields( $student_id, $student ) {
 	}
 
 	$first_name = ''; // $_POST['scn_student_first_name'];
-	$last_name = ''; $_POST['scn_student_last_name'];
+	$last_name = ''; // $_POST['scn_student_last_name'];
 	
 	if ( isset( $_POST['scn_student_first_name'] ) ) {
 		$first_name = sanitize_text_field( $_POST['scn_student_first_name'] );

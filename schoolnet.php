@@ -318,4 +318,49 @@ add_filter( 'show_admin_bar', 'scn_restrict_admin_bar');
 function scn_restrict_admin_bar() {
     return current_user_can( 'administrator') ? true : false;
 }
-?>
+
+
+
+/* cf7 to post */
+add_filter( 'cf7_2_post_filter-scn_student-title', 'filter_last_name', 10,3 );
+function filter_last_name($value, $post_id, $form_data) {
+error_log("fix title ? " . print_r($form_data, true)); 
+  if (isset($form_data['first-name'])) {
+	  $value = $form_data['first-name'] . ' ' . $form_data['last-name'];
+	  error_log("set title: " . $value);
+  }
+  return $value;
+}
+
+add_filter( 'cf7_2_post_filter-scn_student-status', 'filter_status', 10, 3);
+function filter_status($value, $post_id, $form_data) {
+	// $form_data['status'] = 'published';
+ return 'published';
+}
+
+add_action( 'cf7_2_post_form_posted', 'scn_fix_form', 10, 5);
+function scn_fix_form($post_id, $cf7_key, $post_fields, $post_meta_fields, $form_data) {
+  error_log("post_form_posted:\n   " . print_r($form_data, true));
+  error_log("  " . print_r($cf7_key, true));
+  error_log("  " . print_r($post_fields, true));
+}
+
+add_filter( 'cf7_2_post_status_scn_student', 'scn_fix_post_status', 10, 3);
+function scn_fix_post_status($post_status, $cf7_key, $cf7_form_data )
+{
+	return 'publish'; // not the default 'draft'
+}
+/*
+// error_log('add filter cf7_2_post');
+add_filter('cf7_2_post_form_values', 'simple_cf7_form_values' ,10,4);
+function simple_cf7_form_values($field_values, $cf7_id, $post_type, $ck7_key){
+	error_log("cf7_2_post debug: field_values=" . print_r($field_values, true)); 
+	error_log("  cf7_id:" . print_r($cf7_id, true));
+ 	error_log("  ck7_key:" . print_r($ck7_key, true));	
+  if( 'my-form'!=$ck7_key ) return $field_values; //check this is the correct form.
+   $field_values['your-name'] = 'prefilled name';
+   return $field_values;
+}
+ */
+
+
